@@ -25,7 +25,7 @@ RSpec.describe Order do
   describe "#name" do
   it "returns a string and is read only" do
       expect(order.name).to be_a(String)
-      expect(order.name).to eq("candice")
+      expect(order.name).to eq("Candice")
       expect { order.name = "james" }.to raise_error(NoMethodError)
     end
   end
@@ -74,6 +74,18 @@ RSpec.describe Order do
       find_order = Order.find(order_three.name)
       
       expect(find_order).to eq(order_three)
+    end
+  end
+
+  describe ".create_report" do
+    it "will create a printed report of orders" do
+      order_two = Order.new("david", "chinos", "90")
+      order_four = Order.new("alyssa", "shoes", "2")
+      order_five = Order.new("alyssa", "chinos", "2")
+      create_report = Order.create_report
+      
+      expect(Order.create_report).to include("David: n/a")
+      expect(Order.create_report).to include("Alyssa: shoes - $60.00, chinos - $31.98 | Average Order Value: $45.99")
     end
   end
 end
