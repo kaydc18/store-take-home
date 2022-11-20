@@ -8,7 +8,7 @@ class Order
   @@all = []
 
   def initialize(name, item, amount)
-    @name = name
+    @name = name.capitalize
     if Checkin.find(item).amount >= amount.to_f
       @items_array = []
       @average_price = create_average(item, amount)
@@ -46,5 +46,27 @@ class Order
       Order.delete(Order.find(@name))
     end
     @items_array << { item => "#{'%.2f' % price_total}" }
+  end
+
+  def self.create_report
+    order_text = []
+    @@all.each do |order|
+      if order.incomplete_order.nil?
+        items_string = ""
+        order.items_array.each do |item|
+          item.each do |key, value|
+            item_comma = ""
+            if order.items_array.count > 1 && (order.items_array.count)-1 > order.items_array.index(item)
+              item_comma = ","
+            end
+            items_string += " #{key} - $#{value}#{item_comma}"
+          end
+        end
+        order_text << "#{order.name}:#{items_string} | Average Order Value: $#{order.average_price.to_s}"
+      else
+        order_text << "#{order.name}: #{order.incomplete_order}"
+      end
+    end
+    order_text
   end
 end

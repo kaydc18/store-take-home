@@ -10,7 +10,6 @@ RSpec.describe Checkin do
   end
 
   let(:checkin) { Checkin.new("shirts", "30") }
-  let(:checkin_two) { Checkin.new("watches", "25") }
 
   describe "#item" do
     it "returns a string and is read only" do
@@ -29,9 +28,9 @@ RSpec.describe Checkin do
   end
 
   describe ".all method" do
-    it "returns all Register instances" do
+    it "returns all Checkin instances" do
       expect(Checkin.all).to be_an(Array)
-      expect(Checkin.all).to include(checkin_two)
+      expect(Checkin.all).to include(checkin)
     end
   end
 
