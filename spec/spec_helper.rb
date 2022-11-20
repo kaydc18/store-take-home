@@ -1,0 +1,5 @@
+require "pry"
+require "rspec"
+require_relative "../models/register"
+require_relative "../models/checkin"
+require_relative "../models/order"
