@@ -47,11 +47,11 @@ RSpec.describe Checkin do
   end
 
   describe ".update method" do
-  it "will find and update previous instance amount" do
-    old_jackets = Checkin.find("jackets")
-    new_jackets = Checkin.new("jackets", "8")
+    it "will find and update previous instance amount" do
+      old_jackets = Checkin.find("jackets")
+      new_jackets = Checkin.new("jackets", "8")
 
-    expect(old_jackets.amount).to eq(12)
+      expect(old_jackets.amount).to eq(12)
+    end
   end
-end
 end

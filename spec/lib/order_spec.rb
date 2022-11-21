@@ -1,19 +1,13 @@
 require "spec_helper"
 
 RSpec.describe Order do
-  
   describe ".new method" do
     it "will take in name, chinos, amount" do
       register = Register.new("chinos", "$15.99")
       checkin = Checkin.new("chinos", "30")
       order = Order.new("candice", "chinos", "10")
-      order_two = Order.new("randal", "chinos", "90")
   
       expect(order).to be_a(Order)
-    end
-
-    it "attempt to over purchase will give an order a variable of #incomplete_order" do
-      expect(order_two.incomplete_order).to eq("n/a")
     end
   end
   
@@ -32,7 +26,8 @@ RSpec.describe Order do
 
   describe "#average_price" do
     it "returns the correct information on initial order" do
-      expect(order.average_price).to eq(159.9)
+      find_order = Order.find("Candice")
+      expect(find_order.average_price).to eq(159.9)
     end
   end
 

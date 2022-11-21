@@ -6,6 +6,7 @@ RSpec.describe CreateReportHelper do
       register = Register.new("chinos", "$15.99")
       checkin = Checkin.new("chinos", "30")
       order = Order.new("candice", "chinos", "10")
+      order = Order.new("candice", "chinos", "80")
       order_two = Order.new("randal", "chinos", "90")
       create_report = CreateReportHelper.create_report
       
