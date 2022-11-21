@@ -8,7 +8,9 @@ begin
   split_line = []
   File.foreach(ARGV[0]) do |line|
     split_line = line.split(" ")
+    
     constant_line = split_line.first.capitalize
+
     if split_line.count == 3
       Object.const_get(constant_line).new(split_line[1], split_line[2])
     else

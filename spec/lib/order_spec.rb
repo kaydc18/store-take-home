@@ -27,6 +27,7 @@ RSpec.describe Order do
   describe "#average_price" do
     it "returns the correct information on initial order" do
       find_order = Order.find("Candice")
+      
       expect(find_order.average_price).to eq(159.9)
     end
   end

@@ -12,10 +12,13 @@ class Order
     @items_array = []
     @incomplete_items = []
     @average_price = 0
+    
     if Checkin.find(item).amount >= amount.to_f
       create_average(item, amount)
+
       unless Checkin.find(item).nil?
         found_inst = Checkin.find(item)
+
         Checkin.update_amount(found_inst, amount, "purchase")
       end
     else
@@ -38,18 +41,24 @@ class Order
 
   def create_average(item, amount)
     add_items_and_price(item, amount)
+
     average = 0
+
     @items_array.each do |item|
       average += item.values[0].to_f
     end
+
     @average_price = average / @items_array.count
   end
 
   def add_items_and_price(item, amount)
     price_total = (Register.find(item).price * amount.to_f)
+    
     price_total_convert = sprintf('%.2f', price_total)
+
     unless Order.find(@name).nil?
       @items_array += Order.find(@name).items_array
+
       Order.delete(Order.find(@name))
     end
 
@@ -60,8 +69,10 @@ class Order
     unless Order.find(@name).nil?
       current_order = Order.find(@name)
       @average_price = current_order.average_price
-      @items_array += current_order.items_array
+      @items_array = current_order.items_array
+
       @incomplete_items << { item => text }
+
       Order.delete(current_order)
     end
 

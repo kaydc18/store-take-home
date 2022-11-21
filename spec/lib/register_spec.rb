@@ -23,6 +23,7 @@ RSpec.describe Register do
   describe "#price" do
     it "returns an integer" do
       register_socks = Register.new("socks", "$5.99")
+      
       expect(register_socks.price).to be_an(Float)
       expect(register_socks.price).to eq(5.99)
     end

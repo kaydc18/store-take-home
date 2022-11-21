@@ -22,6 +22,7 @@ RSpec.describe Checkin do
   describe "#amount" do
     it "returns an integer" do
       jackets = Checkin.new("jackets", "4")
+
       expect(jackets.amount).to be_an(Integer)
       expect(jackets.amount).to eq(4)
     end
@@ -30,6 +31,7 @@ RSpec.describe Checkin do
   describe ".all method" do
     it "returns all Checkin instances" do
       sweatshirts = Checkin.new("sweatshirts", "50")
+      
       expect(Checkin.all).to be_an(Array)
       expect(Checkin.all).to include(sweatshirts)
     end
