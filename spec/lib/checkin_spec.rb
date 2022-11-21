@@ -20,28 +20,38 @@ RSpec.describe Checkin do
   end
 
   describe "#amount" do
-    it "returns an integer and is read only" do
-      expect(checkin.amount).to be_an(Integer)
-      expect(checkin.amount).to eq(30)
-      expect { checkin.amount = 27 }.to raise_error(NoMethodError)
+    it "returns an integer" do
+      jackets = Checkin.new("jackets", "4")
+      expect(jackets.amount).to be_an(Integer)
+      expect(jackets.amount).to eq(4)
     end
   end
 
   describe ".all method" do
     it "returns all Checkin instances" do
+      sweatshirts = Checkin.new("sweatshirts", "50")
       expect(Checkin.all).to be_an(Array)
-      expect(Checkin.all).to include(checkin)
+      expect(Checkin.all).to include(sweatshirts)
     end
   end
 
   describe ".find method" do
     it "Will find items and return nil if not found" do
-      new_checkin = Checkin.new("pants", "80") 
+      pants = Checkin.new("pants", "80") 
       item = "pants"
       false_item = "pineapples"
       
-      expect(Checkin.find(item)).to eq(new_checkin)
+      expect(Checkin.find(item)).to eq(pants)
       expect(Checkin.find(false_item)).to eq(nil)
     end
   end
+
+  describe ".update method" do
+  it "will find and update previous instance amount" do
+    old_jackets = Checkin.find("jackets")
+    new_jackets = Checkin.new("jackets", "8")
+
+    expect(old_jackets.amount).to eq(12)
+  end
+end
 end
