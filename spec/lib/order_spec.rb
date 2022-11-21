@@ -76,16 +76,4 @@ RSpec.describe Order do
       expect(find_order).to eq(order_three)
     end
   end
-
-  describe ".create_report" do
-    it "will create a printed report of orders" do
-      order_two = Order.new("david", "chinos", "90")
-      order_four = Order.new("alyssa", "shoes", "2")
-      order_five = Order.new("alyssa", "chinos", "2")
-      create_report = Order.create_report
-      
-      expect(Order.create_report).to include("David: n/a")
-      expect(Order.create_report).to include("Alyssa: shoes - $60.00, chinos - $31.98 | Average Order Value: $45.99")
-    end
-  end
 end
