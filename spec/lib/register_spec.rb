@@ -21,10 +21,11 @@ RSpec.describe Register do
   end
 
   describe "#price" do
-    it "returns an integer and is read only" do
-      expect(register.price).to be_an(Float)
-      expect(register.price).to eq(15.99)
-      expect { register.price = 13.0 }.to raise_error(NoMethodError)
+    it "returns an integer" do
+      register_socks = Register.new("socks", "$5.99")
+      
+      expect(register_socks.price).to be_an(Float)
+      expect(register_socks.price).to eq(5.99)
     end
   end
 
@@ -43,6 +44,15 @@ RSpec.describe Register do
 
       expect(Register.find(item)).to eq(new_register)
       expect(Register.find(false_item)).to eq(nil)
+    end
+  end
+
+  describe ".update method" do
+    it "will find and update previous instance amount" do
+      old_socks = Register.find("socks")
+      new_socks = Register.new("socks", "$8.00")
+
+      expect(old_socks.price).to eq(8.0)
     end
   end
 end

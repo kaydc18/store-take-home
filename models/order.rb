@@ -1,19 +1,28 @@
-require_relative 'register'
-require_relative 'checkin'
+require_relative "register"
+require_relative "checkin"
 
 class Order
-  attr_reader :name, :incomplete_order
-  attr_accessor :items_array, :average_price
+  attr_reader :name
+  attr_accessor :items_array, :incomplete_items, :average_price
 
   @@all = []
 
   def initialize(name, item, amount)
     @name = name.capitalize
+    @items_array = []
+    @incomplete_items = []
+    @average_price = 0
+    
     if Checkin.find(item).amount >= amount.to_f
-      @items_array = []
-      @average_price = create_average(item, amount)
+      create_average(item, amount)
+
+      unless Checkin.find(item).nil?
+        found_inst = Checkin.find(item)
+
+        Checkin.update_amount(found_inst, amount, "purchase")
+      end
     else
-      @incomplete_order = "n/a"
+      incomplete_orders(item, "n/a")
     end
     @@all << self
   end
@@ -32,41 +41,41 @@ class Order
 
   def create_average(item, amount)
     add_items_and_price(item, amount)
+
     average = 0
+
     @items_array.each do |item|
       average += item.values[0].to_f
     end
-    return average / @items_array.count
+
+    @average_price = average / @items_array.count
   end
 
-  def add_items_and_price(item, amount) 
+  def add_items_and_price(item, amount)
     price_total = (Register.find(item).price * amount.to_f)
+    
+    price_total_convert = sprintf('%.2f', price_total)
+
     unless Order.find(@name).nil?
       @items_array += Order.find(@name).items_array
+
       Order.delete(Order.find(@name))
     end
-    @items_array << { item => "#{'%.2f' % price_total}" }
+
+    @items_array << { item => price_total_convert }
   end
 
-  def self.create_report
-    order_text = []
-    @@all.each do |order|
-      if order.incomplete_order.nil?
-        items_string = ""
-        order.items_array.each do |item|
-          item.each do |key, value|
-            item_comma = ""
-            if order.items_array.count > 1 && (order.items_array.count)-1 > order.items_array.index(item)
-              item_comma = ","
-            end
-            items_string += " #{key} - $#{value}#{item_comma}"
-          end
-        end
-        order_text << "#{order.name}:#{items_string} | Average Order Value: $#{order.average_price.to_s}"
-      else
-        order_text << "#{order.name}: #{order.incomplete_order}"
-      end
+  def incomplete_orders(item, text)
+    unless Order.find(@name).nil?
+      current_order = Order.find(@name)
+      @average_price = current_order.average_price
+      @items_array = current_order.items_array
+
+      @incomplete_items << { item => text }
+
+      Order.delete(current_order)
     end
-    order_text
+
+    @incomplete_items << { item => text }
   end
 end
